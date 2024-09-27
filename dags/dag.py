@@ -21,7 +21,6 @@ default_args = {
 
 producer = KafkaProducer(bootstrap_servers="localhost:9092", max_block_ms=10_000*SECONDS)
 
-
 @task(task_id="stream_data")
 def stream_data():
     for _ in range(100):
@@ -30,8 +29,6 @@ def stream_data():
         producer.send("user_data", value=data)
 
 @dag(dag_id="stream_data", default_args=default_args, schedule_interval="@daily")
-def dag():
+def dag_service():
     stream_data()
-
-dg = dag()
 
