@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+apache-airflow = "*"
+faker = "*"
+dataclasses-json = "*"
+kafka = "*"
+kafka-python = "*"
+kafka-python-ng = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
