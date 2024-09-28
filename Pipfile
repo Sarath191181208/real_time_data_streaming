@@ -10,8 +10,11 @@ dataclasses-json = "*"
 kafka = "*"
 kafka-python = "*"
 kafka-python-ng = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
+types-six = "*"
+ruff = "*"
 
 [requires]
 python_version = "3.12"
