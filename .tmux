@@ -1,16 +1,15 @@
 ###### VENV ####### 
 # Check if virtual environment is activated
-if  -z "$VIRTUAL_ENV"
+if [ -z "$VIRTUAL_ENV" ]
 then
-    printf "Virtual environment is not activated Use `${BYellow}pipenv ${BIWhite}shell${NC}` command. Exiting..."
+    echo "Virtual environment is not activated Use \`${BYellow}pipenv ${BIWhite}shell${NC}\` command. Exiting..."
     exit 1
 fi
-
 ###### Docker ####### 
 # Check if Docker is running
 if ! docker info &> /dev/null
 then
-   printf "Docker( ) is not running."
+   echo "Docker( ) is not running."
    sudo systemctl start docker   
 fi
 
