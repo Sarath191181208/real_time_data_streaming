@@ -23,11 +23,19 @@ if [ $? -ne 0 ];
   tmux new-session -d -s $SESSIONNAME
 
   # Window 1: Open nvim on the current project root
-  tmux new-window -t $SESSIONNAME:1 -n 'nvim'
+  tmux new-window -t $SESSIONNAME:1 -n ''
   tmux send-keys -t $SESSIONNAME:1 'nvim' C-m
 
   # Window 2: Command line window
-  tmux new-window -t $SESSIONNAME:2 -n 'cmd'
+  tmux new-window -t $SESSIONNAME:2 -n ''
+
+  # Window 3: Send docker compose up 
+  tmux new-window -t $SESSIONNAME:3 -n '  '
+  tmux send-keys -t $SESSIONNAME:3 'docker compose up -d' C-m
+
+  # Window 4: Lazy docker 
+  tmux new-window -t $SESSIONNAME:4 -n ' '
+  tmux send-keys -t $SESSIONNAME:4 'lazydocker' C-m
 
 fi
 
