@@ -11,6 +11,7 @@ kafka = "*"
 kafka-python = "*"
 kafka-python-ng = "*"
 psycopg2-binary = "*"
+spark = "*"
 
 [dev-packages]
 types-six = "*"
