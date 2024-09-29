@@ -3,7 +3,7 @@ from faker import Faker
 import random
 import json
 
-from models import User
+from data.user import User, UserEncoder
 
 # Initialize Faker object
 fake = Faker()
@@ -70,6 +70,10 @@ if __name__ == "__main__":
     fake_user = generate_fake_user()
 
     # Print the generated user data
-    data = (json.dumps(fake_user, default=str))
+    data = json.loads(json.dumps(fake_user, cls=UserEncoder, indent=4))
+    print(data)
+
+    # print the type 
+    print(type(data))
     
-    __import__('pprint').pprint(User(**fake_user))
+    __import__('pprint').pprint(User(**data))
