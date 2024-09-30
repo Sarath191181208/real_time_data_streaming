@@ -125,7 +125,8 @@ services:
       - ./data:/opt/airflow/data
       - ./scripts/entrypoint.sh:/opt/airflow/scripts/entrypoint.sh
       - ./log.log:/opt/airflow/dags/log.log
-      - ./requirements.txt:/opt/airflow/requirements.txt
+      - ./Pipfile.lock:/opt/airflow/Pipfile.lock
+      - ./Pipfile:/opt/airflow/Pipfile
     ports:
       - "8080:8080"
     healthcheck:

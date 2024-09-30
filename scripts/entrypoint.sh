@@ -1,12 +1,15 @@
 #!/bin/bash
 set -e
 
-if [ -e "/opt/airflow/requirements.txt" ]; then
-  $(command python) pip install --upgrade pip
-  $(command -v pip) install -r requirements.txt
-fi
+# installing the pipenv 
+pip install pipenv 
 
+cd /opt/airflow
+echo $PWD
+# installing modules using pipenv
+pipenv install --system --deploy --ignore-pipfile
 
+# init the airflow db
 if [ ! -f "/opt/airflow/airflow.db" ]; then
   airflow db init && \
   airflow users create \
