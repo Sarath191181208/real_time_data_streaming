@@ -12,8 +12,10 @@ kafka-python = "*"
 kafka-python-ng = "*"
 psycopg2-binary = "*"
 spark = "*"
-data = {file = "data", editable = true}
 sqlalchemy = "*"
+cassandra-driver = "*"
+pyspark = "*"
+data = {file = "data", editable = true}
 
 [dev-packages]
 types-six = "*"
