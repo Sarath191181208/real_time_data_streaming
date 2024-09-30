@@ -1,138 +1,91 @@
-from typing import Type
+from typing import dataclasses
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
+
 import json
-from sqlalchemy import create_engine, Column, String, Integer, Float, ForeignKey, DateTime
-from sqlalchemy.orm import declarative_base, relationship, sessionmaker
-from sqlalchemy.orm.mapper import class_mapper
-
-# Define the base class for SQLAlchemy models
-Base: Type = declarative_base() 
 
 @dataclass
-class Coordinates(Base):
-    __tablename__ = 'coordinates'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    latitude = Column(Float, nullable=False)
-    longitude = Column(Float, nullable=False)
+class Coordinates:
+    latitude: float
+    longitude: float
 
 @dataclass
-class Timezone(Base):
-    __tablename__ = 'timezone'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    offset = Column(String, nullable=False)
-    description = Column(String, nullable=False)
+class Timezone:
+    offset: str
+    description: str
 
 @dataclass
-class Street(Base):
-    __tablename__ = 'street'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    number = Column(Integer, nullable=False)
-    name = Column(String, nullable=False)
+class Street:
+    number: int
+    name: str
 
 @dataclass
-class Location(Base):
-    __tablename__ = 'location'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    street_id = Column(Integer, ForeignKey('street.id'))
-    city = Column(String, nullable=False)
-    state = Column(String, nullable=False)
-    country = Column(String, nullable=False)
-    postcode = Column(String, nullable=False)
-    coordinates_id = Column(Integer, ForeignKey('coordinates.id'))
-    timezone_id = Column(Integer, ForeignKey('timezone.id'))
-
-    street = relationship("Street")
-    coordinates = relationship("Coordinates")
-    timezone = relationship("Timezone")
+class Location:
+    street: Street
+    city: str
+    state: str
+    country: str
+    postcode: str
+    coordinates: Coordinates
+    timezone: Timezone
 
 @dataclass
-class Name(Base):
-    __tablename__ = 'name'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    title = Column(String, nullable=False)
-    first = Column(String, nullable=False)
-    last = Column(String, nullable=False)
+class Name:
+    title: str
+    first: str
+    last: str
 
 @dataclass
-class Login(Base):
-    __tablename__ = 'login'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    uuid = Column(String, unique=True, nullable=False)
-    username = Column(String, nullable=False)
-    password = Column(String, nullable=False)
-    salt = Column(String, nullable=False)
-    md5 = Column(String, nullable=False)
-    sha1 = Column(String, nullable=False)
-    sha256 = Column(String, nullable=False)
+class Login:
+    uuid: str
+    username: str
+    password: str
+    salt: str
+    md5: str
+    sha1: str
+    sha256: str
 
 @dataclass
-class DOB(Base):
-    __tablename__ = 'dob'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    date = Column(DateTime, nullable=False)
-    age = Column(Integer, nullable=False)
+class DOB:
+    date: datetime
+    age: int
 
 @dataclass
-class Registered(Base):
-    __tablename__ = 'registered'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    date = Column(DateTime, nullable=False)
-    age = Column(Integer, nullable=False)
-
-@dataclass()
-class SocialDetails(Base):
-    __tablename__ = 'SocialDetails'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String, nullable=False)
-    value = Column(String, nullable=False)
+class Registered:
+    date: datetime
+    age: int
 
 @dataclass
-class Picture(Base):
-    __tablename__ = 'picture'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    large = Column(String, nullable=False)
-    medium = Column(String, nullable=False)
-    thumbnail = Column(String, nullable=False)
+class ID:
+    name: str
+    value: str
 
 @dataclass
-class User(Base):
-    __tablename__ = 'user'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    gender = Column(String, nullable=False)
-    name_id = Column(Integer, ForeignKey('name.id'))
-    location_id = Column(Integer, ForeignKey('location.id'))
-    email = Column(String, nullable=False)
-    login_id = Column(Integer, ForeignKey('login.id'))
-    dob_id = Column(Integer, ForeignKey('dob.id'))
-    registered_id = Column(Integer, ForeignKey('registered.id'))
-    phone = Column(String, nullable=False)
-    cell = Column(String, nullable=False)
-    social_id_id = Column(Integer, ForeignKey('SocialDetails.id'))
-    picture_id = Column(Integer, ForeignKey('picture.id'))
-    nat = Column(String, nullable=False)
+class Picture:
+    large: str
+    medium: str
+    thumbnail: str
 
-    name = relationship("Name")
-    location = relationship("Location")
-    login = relationship("Login")
-    dob = relationship("DOB")
-    registered = relationship("Registered")
-    social_details = relationship("SocialDetails")
-    picture = relationship("Picture")
+@dataclass
+class User:
+    gender: str
+    name: Name
+    location: Location
+    email: str
+    login: Login
+    dob: DOB
+    registered: Registered
+    phone: str
+    cell: str
+    id: ID
+    picture: Picture
+    nat: str
 
-def serialize_model(obj):
-    """
-    Custom serializer function for nested SQLAlchemy models.
-    
-    Args:
-    obj: SQLAlchemy model instance to be serialized.
-    
-    Returns:
-    A JSON-compatible dictionary representation of the given object.
-    """
-    # Return simple types directly
-    if isinstance(obj, (int, float, str, bool)):
+    def __dict__(self):
+        return dataclasses.asdict(self)
+
+    def json(self) -> dict:
         return obj
 
     # If Decimal return float 
