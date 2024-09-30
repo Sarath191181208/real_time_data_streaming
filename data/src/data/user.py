@@ -1,3 +1,4 @@
+from typing import Type
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
@@ -7,7 +8,7 @@ from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy.orm.mapper import class_mapper
 
 # Define the base class for SQLAlchemy models
-Base = declarative_base()
+Base: Type = declarative_base() 
 
 @dataclass
 class Coordinates(Base):
