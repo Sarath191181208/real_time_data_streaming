@@ -3,7 +3,7 @@ from faker import Faker
 import random
 import json
 
-from data.user import User, UserEncoder
+from data.user import User
 
 # Initialize Faker object
 fake = Faker()
@@ -62,18 +62,22 @@ def generate_fake_user() -> User:
         "nat": fake.country_code(representation="alpha-2"),
     }
 
-    return User(**user_data)
+    return User(**user_data) # type: ignore
 
 
-if __name__ == "__main__":
+def main():
     # Generate a fake user
     fake_user = generate_fake_user()
 
     # Print the generated user data
-    data = json.loads(json.dumps(fake_user, cls=UserEncoder, indent=4))
+    data = fake_user.json()
     print(data)
 
     # print the type 
     print(type(data))
-    
-    __import__('pprint').pprint(User(**data))
+
+    __import__('pprint').pprint(User.from_json(json.dumps(data)))
+
+
+if __name__ == "__main__":
+    main()
